@@ -11,7 +11,7 @@ jobs:
     demands:
       - agent.name -equals vm-TOOLSYUL000
   steps:
-  - checkout: git://dev-DEVCUApp-02
+  - checkout: git://Yu1ia777/dev-DEVCUApp-02
     displayName: 'Checkout GitHub repository'
   - script: terraform init
     displayName: 'Initialize Terraform'
