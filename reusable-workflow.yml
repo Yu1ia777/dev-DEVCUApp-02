@@ -1,3 +1,9 @@
+resources:
+  repositories:
+    - repository: templateRepo
+      type: github
+      name: Yu1ia777/dev-DEVCUApp-02
+      endpoint: GitHub-dev-DEVCUApp-02 Connection
 parameters:
   environment:
     type: string
