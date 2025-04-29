@@ -1,13 +1,5 @@
-resources:
-  repositories:
-    - repository: templateRepo
-      type: github
-      name: Yu1ia777/dev-DEVCUApp-02
-      endpoint: GitHub-dev-DEVCUApp-02 Connection
 parameters:
   environment:
-    type: string
-  nodeVersion:  # Este parámetro ya no es necesario, pero lo mantenemos por compatibilidad
     type: string
 
 jobs:
@@ -17,9 +9,14 @@ jobs:
     demands:
       - agent.name -equals vm-TOOLSYUL000
   steps:
-  - checkout: git://Yu1ia777/dev-DEVCUApp-02
+  - checkout: templateRepo
     displayName: 'Checkout GitHub repository'
-  - script: terraform init
+  - script: |
+      export ARM_CLIENT_ID=$(ARM_CLIENT_ID)
+      export ARM_CLIENT_SECRET=$(ARM_CLIENT_SECRET)
+      export ARM_SUBSCRIPTION_ID=$(ARM_SUBSCRIPTION_ID)
+      export ARM_TENANT_ID=$(ARM_TENANT_ID)
+      terraform init
     displayName: 'Initialize Terraform'
   - script: terraform plan -out=tfplan
     displayName: 'Plan Terraform changes'
