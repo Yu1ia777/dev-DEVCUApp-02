@@ -1,25 +1,23 @@
 parameters:
   environment:
     type: string
-  nodeVersion:
+  nodeVersion:  # Este parámetro ya no es necesario, pero lo mantenemos por compatibilidad
     type: string
 
 jobs:
-- job: BuildAndTest
+- job: TerraformApply
   pool:
     name: SelfHostedAgentPool-vm-TOOLSYUL000
     demands:
       - agent.name -equals vm-TOOLSYUL000
   steps:
-  - task: NodeTool@0
-    inputs:
-      versionSpec: ${{ parameters.nodeVersion }}
-    displayName: 'Install Node.js'
-  - script: npm install
-    displayName: 'Install dependencies'
-  - script: npm test
-    displayName: 'Run tests'
-  - script: npm run build
-    displayName: 'Build project'
-  - script: echo "Deploying to ${{ parameters.environment }}"
+  - checkout: git://dev-DEVCUApp-02
+    displayName: 'Checkout GitHub repository'
+  - script: terraform init
+    displayName: 'Initialize Terraform'
+  - script: terraform plan -out=tfplan
+    displayName: 'Plan Terraform changes'
+  - script: terraform apply -auto-approve tfplan
+    displayName: 'Apply Terraform changes'
+  - script: echo "Deployed to ${{ parameters.environment }}"
     displayName: 'Print environment'
